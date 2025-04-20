@@ -2,198 +2,244 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C02</title>
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CO2 Predictor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: url('/static/co2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    div {
+      background-color: rgba(0, 0, 0, 0.75);
+      width: 95%;
+      max-width: 1100px;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #1ba11f;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px 20px;
+      align-items: start;
+    }
+
+    h3 {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      transform: scale(1.02);
+      box-shadow: 0 0 8px rgba(0, 255, 213, 0.7);
+    }
+
+    #sub {
+      background-color: #1ba11f;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      display: block;
+      margin: 20px auto 0 auto;
+    }
+
+    #sub:hover {
+      background-color: #00bfa6;
+      transform: scale(1.03);
+      box-shadow: 0 0 10px #00ffd5;
+    }
+
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      grid-column: span 4;
+    }
+
+    .result h3 {
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    .prediction-blue {
+      color: #062d75;
+    }
+
+    .eco-green {
+      color: #1ba11f;
+      font-weight: bold;
+    }
+
+    .eco-red {
+      color: #ff4d4d;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .result {
+        grid-column: span 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <div>
+    <form action="{{ url_for('predict') }}" method="post">
+      <h2>Predictive CO₂</h2>
 
-    <div style="font-size: 20px;">
-        <form action="{{ url_for('predict')}}" method="post">
-            <h2>Predictive Co2</h2>
+      <!-- Input fields -->
+      <div>
+        <h3>Engine Size</h3>
+        <input name="Engine_Size" required />
+      </div>
+      <div>
+        <h3>Cylinders</h3>
+        <input name="Cylinders" required />
+      </div>
+      <div>
+        <h3>Fuel Consumption City (L/100 km)</h3>
+        <input name="Fuel_Consumption_City" required />
+      </div>
+      <div>
+        <h3>Fuel Consumption Hwy (L/100 km)</h3>
+        <input name="Fuel_Consumption_Hwy" required />
+      </div>
+      <div>
+        <h3>Fuel Consumption Comb (L/100 km)</h3>
+        <input name="Fuel_Consumption_Comb" required />
+      </div>
+      <div>
+        <h3>Fuel Consumption Comb (mpg)</h3>
+        <input name="Fuel_Consumption_Comb_mpg" required />
+      </div>
+      <div>
+        <h3>Fuel Types</h3>
+        <select name="Fuel_Type" required>
+          <option value="Type_E">Type E</option>
+          <option value="Type_X">Type X</option>
+          <option value="Type_Z">Type Z</option>
+        </select>
+      </div>
+      <div>
+        <h3>Transmission type</h3>
+        <select name="Transmission" required>
+          <option value="A4">A4</option>
+          <option value="A5">A5</option>
+          <option value="A6">A6</option>
+          <option value="A7">A7</option>
+          <option value="A8">A8</option>
+          <option value="A9">A9</option>
+          <option value="AM5">AM5</option>
+          <option value="AM6">AM6</option>
+          <option value="AM7">AM7</option>
+          <option value="AM8">AM8</option>
+          <option value="AM9">AM9</option>
+          <option value="AS4">AS4</option>
+          <option value="AS5">AS5</option>
+          <option value="AS6">AS6</option>
+          <option value="AS7">AS7</option>
+          <option value="AS8">AS8</option>
+          <option value="AS9">AS9</option>
+          <option value="AS10">AS10</option>
+          <option value="AV">AV</option>
+          <option value="AV6">AV6</option>
+          <option value="AV7">AV7</option>
+          <option value="AV8">AV8</option>
+          <option value="AV10">AV10</option>
+          <option value="M5">M5</option>
+          <option value="M6">M6</option>
+          <option value="M7">M7</option>
+        </select>
+      </div>
+      <div>
+        <h3>Make</h3>
+        <select name="Make" required>
+          <option value="Luxury">Luxury</option>
+          <option value="Premium">Premium</option>
+          <option value="Sports">Sports</option>
+        </select>
+      </div>
+      <div>
+        <h3>Vehicle Class</h3>
+        <select name="Vehicle_Class" required>
+          <option value="SUV">SUV</option>
+          <option value="Sedan">Sedan</option>
+          <option value="Truck">Truck</option>
+        </select>
+      </div>
 
+      <!-- Submit Button centered with no surrounding styling div -->
+      <button id="sub" type="submit">Calculate CO₂</button>
 
-            
-            
-            <h3>Engine Size</h3><br><input id="second" name="Engine_Size" required="required">            
-            <h3>Cylinders</h3><input id="third" name="Cylinders" required="required">            
-            <h3>Fuel Consumption City (L/100 km) </h3><br><input id="third" name="Fuel_Consumption_City" required="required">            
-            <h3>Fuel Consumption Hwy  (L/100 km) </h3><br><input id="third" name="Fuel_Consumption_Hwy" required="required">            
-            <h3>Fuel Consumption Comb (L/100 km) </h3><br><input id="third" name="Fuel_Consumption_Comb" required="required">            
-            <h3>Fuel Consumption Comb (mpg) </h3><br><input id="third" name="Fuel_Consumption_Comb_mpg" required="required">                              
-           
-           <!--Fuel Type -->
-            
-            <h3>Fuel Types</h3><br><select name="Fuel_Type" id="research" required="required">
-                <option value="Type_E">Type E</option>
-                <option value="Type_X">Type X</option>
-                <option value="Type_Z">Type Z</option>
-            </select>
-           
-           
-           <!--Transmission-->
-            <h3>Transmission type</h3><br><select name="Transmission" id="research" required="required">
-                <option value="A4">A4</option>
-                <option value="A5">A5</option>
-                <option value="A6">A6</option>
-                <option value="A7">A7</option>
-                <option value="A8">A8</option>
-                <option value="A9">A9</option>
-                <option value="AM5">AM5</option>
-                <option value="AM6">AM6</option>
-                <option value="AM7">AM7</option>
-                <option value="AM8">AM8</option>
-                <option value="AM9">AM9</option>
-                <option value="AS4">AS4</option>
-                <option value="AS5">AS5</option>
-                <option value="AS6">AS6</option>
-                <option value="AS7">AS7</option>
-                <option value="AS8">AS8</option>
-                <option value="AS9">AS9</option>
-                <option value="AS10">AS10</option>
-                <option value="AV">AV</option>
-                <option value="AV6">AV6</option>
-                <option value="AV7">AV7</option>
-                <option value="AV8">AV8</option>
-                <option value="AV10">AV10</option>
-                <option value="M5">M5</option>
-                <option value="M6">M6</option>
-                <option value="M7">M7</option>
-            </select>
-
-           
-           <!--Make-->
-           
-            <h3>Make</h3><br><select name="Make" id="research" required="required">
-                <option value="Luxury">Luxury</option>
-                <option value="Premium">Premium</option>
-                <option value="Sports">Sports</option>
-            </select>
-
-
-           <!--Vichle Class-->
-            <h3>Vechicle Class</h3><br><select name="Vehicle_Class" id="research" required="required">
-                <option value="SUV">SUV</option>
-                <option value="Sedan">Sedan</option>
-                <option value="Truck">Truck</option>                
-            </select>
-
-            <br><br><button id="sub" type="submit ">Calculate Co2</button>
-            <br>
-
-        </form>
-
-
-
-        <br><br><h3>{{ prediction_text }}<h3>
-            <br><br><h3>{{rating_text }}<h3>
-                <br><br><h3>{{ eco_text }}<h3></h3>
-    </div>
-
-
-
-
-    <style>
-        body {
-            background-image: image-url('/static/co2.jpg');
-            text-align: center;
-            padding: 0px;
-        }
-        
-        #research {
-            font-size: 18px;
-            width: 100px;
-            height: 23px;
-            top: 23px;
-        }
-        
-        #box {
-            border-radius: 60px;
-            border-color: 45px;
-            border-style: solid;
-            font-family: cursive;
-            text-align: center;
-            background-color: rgb(168, 131, 61);
-            font-size: medium;
-            position: absolute;
-            width: 700px;
-            bottom: 9%;
-            height: 850px;
-            right: 30%;
-            padding: 0px;
-            margin: 0px;
-            font-size: 14px;
-        }
-        
-        #fuel {
-            width: 83px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 20px;
-        }
-        
-        #fuel:hover {
-            background-color: coral;
-        }
-        
-        #research {
-            width: 110px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #research:hover {
-            background-color: coral;
-        }
-        
-        #resea {
-            width: 99px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #resea:hover {
-            background-color: coral;
-        }
-        
-        #sub {
-            width: 120px;
-            height: 43px;
-            text-align: center;
-            border-radius: 14px;
-            font-size: 18px;
-        }
-        
-        #sub:hover {
-            background-color: darkcyan;
-        }
-        
-        #second {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-        
-        #third {
-            border-radius: 14px;
-            height: 25px;
-            font-size: 20px;
-            text-align: center;
-        }
-        
-
-
-
-       
-    </style>
+      <!-- Prediction Output (centered, clean) -->
+      {% if prediction_text %}
+        <div class="result">
+          <h3 class="prediction-blue">{{ prediction_text }}</h3>
+          <h3 class="prediction-blue">{{ rating_text }}</h3>
+          <h3 class="{{ 'eco-green' if eco_color == 'green' else 'eco-red' }}">{{ eco_text }}</h3>
+        </div>
+      {% endif %}
+    </form>
+  </div>
 </body>
 
 </html>
